@@ -44,7 +44,7 @@ class Server:
         self.indexed_dataset()
         data_len = len(self.__indexed_dataset)
 
-        assert index is not None and index > 0 and index < data_len
+        assert index is not None and index >= 0 and index < data_len
 
         data = []
         count = 0
