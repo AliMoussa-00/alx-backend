@@ -48,9 +48,15 @@ class Server:
         start = index
         end = index + page_size
 
-        if self.__indexed_dataset.get(index) is None:
+        # if an item is not available move the start to the next available
+        deleted = False
+        while self.__indexed_dataset.get(start) is None:
+            start += 1
+            deleted = True
+
+        # add the difference to the end index
+        if deleted:
             diff = len(self.__dataset) - len(self.__indexed_dataset)
-            start += diff
             end += diff
 
         data = self.__dataset[start: end]

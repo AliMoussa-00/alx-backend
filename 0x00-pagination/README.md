@@ -63,11 +63,9 @@ print(result)
 
 Deletion-resilient pagination ensures that pagination remains consistent even if items are deleted from the dataset between requests. This prevents issues such as missing or duplicated items in subsequent pages due to deletions.
 
-### Approach:
-
-- Use cursor-based pagination instead of relying solely on page numbers.
-- Provide opaque tokens (cursors) to represent specific positions in the dataset.
-- Clients use cursors to request the next or previous page of data, ensuring consistency even if items are deleted.
+In deletion-resilient pagination, the goal is to ensure that:  
+- All items in the dataset are eventually displayed to the user, even if deletions occur.
+- The order of the items remains consistent, meaning that the pagination mechanism should preserve the original order of the items in the dataset.
 
 ## Conclusion
 
