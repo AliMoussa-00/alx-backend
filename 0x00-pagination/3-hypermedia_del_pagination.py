@@ -46,22 +46,24 @@ class Server:
 
         assert index is not None and index > 0 and index < data_len
 
-        start = index
-        end = index + page_size
+        data = []
+        count = 0
+        cursor = index
 
-        # if an item is not available move the start to the next available
-        while self.__indexed_dataset.get(start) is None:
-            start += 1
-            end += 1
+        while count < page_size and cursor < data_len:
+            data_index = self.__indexed_dataset.get(cursor)
 
-        if end > data_len:
-            end = data_len
+            # check if item exists at an index
+            if data_index is not None:
+                data.append(data_index)
+                count += 1
 
-        data = self.__dataset[start: end]
+            # move to the next item
+            cursor += 1
 
         return {
             "index": index,
             "data": data,
             "page_size": len(data),
-            "next_index": end,
+            "next_index": cursor,
         }
