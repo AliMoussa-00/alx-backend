@@ -44,26 +44,24 @@ class Server:
         self.indexed_dataset()
         data_len = len(self.__indexed_dataset)
 
-        assert index > 0 and index < data_len
+        assert index is not None and index > 0 and index < data_len
+
         start = index
         end = index + page_size
 
         # if an item is not available move the start to the next available
-        deleted = False
         while self.__indexed_dataset.get(start) is None:
             start += 1
-            deleted = True
+            end += 1
 
-        # add the difference to the end index
-        if deleted:
-            diff = len(self.__dataset) - len(self.__indexed_dataset)
-            end += diff
+        if end > data_len:
+            end = data_len
 
         data = self.__dataset[start: end]
 
         return {
             "index": index,
             "data": data,
-            "page_size": page_size,
+            "page_size": len(data),
             "next_index": end,
         }
