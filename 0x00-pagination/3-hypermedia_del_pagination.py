@@ -48,6 +48,7 @@ class Server:
 
         assert isinstance(index, int) and index >= 0 and index <= max(
             self.__indexed_dataset.keys())
+        assert isinstance(page_size, int) and page_size > 0
 
         data = []
         count = 0
