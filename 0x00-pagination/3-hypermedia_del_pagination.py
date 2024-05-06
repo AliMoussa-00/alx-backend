@@ -42,15 +42,15 @@ class Server:
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         self.indexed_dataset()
-        data_len = len(self.__indexed_dataset)
 
-        assert index is not None and index >= 0 and index < data_len
+        assert index is not None and index >= 0 and index <= max(
+            self.__indexed_dataset.keys())
 
         data = []
         count = 0
         cursor = index
 
-        while count < page_size and cursor < data_len:
+        while count < page_size:
             data_index = self.__indexed_dataset.get(cursor)
 
             # check if item exists at an index
