@@ -43,12 +43,15 @@ class Server:
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         self.indexed_dataset()
 
-        assert index is not None and index >= 0 and index <= max(
+        if not index:
+            index = 0
+
+        assert isinstance(index, int) and index >= 0 and index <= max(
             self.__indexed_dataset.keys())
 
         data = []
         count = 0
-        cursor = index if index else 0
+        cursor = index
 
         while count < page_size:
             data_index = self.__indexed_dataset.get(cursor)
@@ -62,7 +65,7 @@ class Server:
             cursor += 1
 
         return {
-            "index": index if index else 0,
+            "index": index,
             "data": data,
             "page_size": len(data),
             "next_index": cursor,
