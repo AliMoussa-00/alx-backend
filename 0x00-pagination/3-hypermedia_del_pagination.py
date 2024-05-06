@@ -48,7 +48,7 @@ class Server:
 
         data = []
         count = 0
-        cursor = index
+        cursor = index if index else 0
 
         while count < page_size:
             data_index = self.__indexed_dataset.get(cursor)
