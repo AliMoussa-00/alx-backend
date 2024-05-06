@@ -41,13 +41,12 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        self.indexed_dataset()
+        dataset = self.indexed_dataset()
 
         if not index:
             index = 0
 
-        assert isinstance(index, int) and index >= 0 and index < len(
-            self.__indexed_dataset)
+        assert isinstance(index, int) and index >= 0 and index < len(dataset)
         assert isinstance(page_size, int) and page_size > 0
 
         data = []
@@ -55,7 +54,7 @@ class Server:
         cursor = index
 
         while count < page_size:
-            data_index = self.__indexed_dataset.get(cursor)
+            data_index = dataset.get(cursor)
 
             # check if item exists at an index
             if data_index is not None:
