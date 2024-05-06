@@ -62,7 +62,7 @@ class Server:
             cursor += 1
 
         return {
-            "index": index,
+            "index": index if index else 0,
             "data": data,
             "page_size": len(data),
             "next_index": cursor,
