@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+'''MRU (Most Recently Used) Caching'''
+
+
+from base_caching import BaseCaching
+
+
+class MRUCache(BaseCaching):
+    '''Defining the MRUCache class'''
+
+    def __init__(self):
+        '''initializing the instance'''
+        super().__init__()
+        # this list will store the keys sorted from least to most used
+        self.queue = []
+
+    def put(self, key, item):
+        '''add element to cache according to MRU algorithm'''
+        if key and item:
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                # delete the most used key, which is at end of queue
+                most_used = self.queue.pop()
+
+                if key not in self.cache_data:
+                    del self.cache_data[most_used]
+                    print(f'DISCARD: {most_used}')
+
+            self.queue.append(key)
+            self.cache_data[key] = item
+
+    def get(self, key):
+        '''get an element from cache'''
+        if key and key in self.cache_data:
+            # change the sorting of the used key
+            # by moving it from its index to the end of list
+            del self.queue[self.queue.index(key)]
+            self.queue.append(key)
+
+            return self.cache_data[key]
+        return None
