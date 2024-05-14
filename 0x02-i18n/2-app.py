@@ -25,7 +25,7 @@ babel.init_app(app, locale_selector=get_locale)
 
 
 @app.route('/')
-def hello_world():
+def hello_world() -> str:
     '''rendering hello world page'''
     return render_template('2-index.html')
 
