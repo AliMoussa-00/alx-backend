@@ -2,7 +2,7 @@
 '''Use user locale'''
 
 
-from typing import Dict, Optional
+from typing import Dict, Union
 from flask import Flask, g, render_template, request
 from flask_babel import Babel
 
@@ -31,21 +31,21 @@ users = {
 def get_locale() -> str:
     '''get the best match language'''
 
-    if 'locale' in request.args and request.args['locale'] in Config.LANGUAGES:
+    if 'locale' in request.args and request.args['locale'] in app.config["LANGUAGES"]:
         return request.args['locale']
 
     if g.user and g.user.get('locale', None) and \
-            g.user['locale'] in Config.LANGUAGES:
+            g.user['locale'] in app.config["LANGUAGES"]:
         return g.user['locale']
 
     if request.headers.get('Accept-Language', None) and \
-            request.headers.get('Accept-Language') in Config.LANGUAGES:
+            request.headers.get('Accept-Language') in app.config["LANGUAGES"]:
         return request.headers.get('Accept-Language')
 
-    return request.accept_languages.best_match(Config.LANGUAGES)
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
-def get_user() -> Optional[Dict[str, Optional[str]]]:
+def get_user() -> Union[Dict, None]:
     '''get the user according to id'''
 
     if 'login_as' in request.args:
