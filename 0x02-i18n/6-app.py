@@ -27,11 +27,12 @@ users = {
 }
 
 
-@app.before_request
+@babel.localeselector
 def get_locale() -> str:
     '''get the best match language'''
 
-    if 'locale' in request.args and request.args['locale'] in app.config["LANGUAGES"]:
+    if 'locale' in request.args and \
+            request.args['locale'] in app.config["LANGUAGES"]:
         return request.args['locale']
 
     if g.user and g.user.get('locale', None) and \
