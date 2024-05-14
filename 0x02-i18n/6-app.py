@@ -14,6 +14,11 @@ class Config:
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
+app = Flask(__name__)
+app.config.from_object(Config)
+babel = Babel(app)
+
+
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
     2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
@@ -22,6 +27,7 @@ users = {
 }
 
 
+@app.before_request
 def get_locale() -> str:
     '''get the best match language'''
 
@@ -39,12 +45,6 @@ def get_locale() -> str:
     return request.accept_languages.best_match(Config.LANGUAGES)
 
 
-app = Flask(__name__)
-app.config.from_object(Config)
-babel = Babel(app)
-babel.init_app(app, locale_selector=get_locale)
-
-
 def get_user() -> Optional[Dict[str, Optional[str]]]:
     '''get the user according to id'''
 
@@ -58,13 +58,13 @@ def get_user() -> Optional[Dict[str, Optional[str]]]:
 
 
 @app.before_request
-def before_request():
+def before_request() -> None:
     '''store the user in flask.g'''
     g.user = get_user()
 
 
 @app.route('/')
-def hello_world():
+def hello_world() -> str:
     '''rendering hello world page'''
     return render_template('6-index.html', user=g.user)
 
