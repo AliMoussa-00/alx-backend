@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-'''Parametrize templates'''
+'''Parametrize templates
+'''
 
 
 from flask import Flask, render_template, request
